@@ -9,9 +9,18 @@ SUBMODULES:=
 # things to clean up, e.g. libfilecoin.a
 CLEAN:=
 
-FFI_PATH:=extern/filecoin-ffi/
+FFI_PATH:=../filecoin-ffi/
 FFI_DEPS:=libfilecoin.a filecoin.pc filecoin.h
 FFI_DEPS:=$(addprefix $(FFI_PATH),$(FFI_DEPS))
+
+DEPS_OPT:
+	cp -rf ../filecoin-ffi/filcrypto.pc ./extern/filecoin-ffi
+	cp -rf ../filecoin-ffi/filcrypto.h ./extern/filecoin-ffi
+	cp -rf ../filecoin-ffi/libfilcrypto.a ./extern/filecoin-ffi
+
+deps: $(BUILD_DEPS)
+
+.PHONY: deps
 
 $(FFI_DEPS): build/.filecoin-ffi-install ;
 
@@ -34,18 +43,18 @@ build/.update-submodules:
 CLEAN+=build/.update-submodules
 
 # build and install any upstream dependencies, e.g. filecoin-ffi
-deps: $(BUILD_DEPS)
+deps: $(BUILD_DEPS) DEPS_OPT
 .PHONY: deps
 
-test: $(BUILD_DEPS)
+test: $(BUILD_DEPS) DEPS_OPT
 	RUST_LOG=info go test -v -timeout 120m ./...
 .PHONY: test
 
-lint: $(BUILD_DEPS)
+lint: $(BUILD_DEPS) DEPS_OPT
 	golangci-lint run -v --concurrency 2 --new-from-rev origin/master
 .PHONY: lint
 
-build: $(BUILD_DEPS)
+build: $(BUILD_DEPS) DEPS_OPT
 	go build -v $(GOFLAGS) ./...
 .PHONY: build
 

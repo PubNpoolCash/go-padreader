@@ -7,4 +7,7 @@ require (
 	github.com/stretchr/testify v1.6.1
 )
 
-replace github.com/filecoin-project/filecoin-ffi => ./extern/filecoin-ffi
+replace github.com/filecoin-project/filecoin-ffi => ../filecoin-ffi
+
+replace github.com/filecoin-project/go-state-types => ../go-state-types
+
