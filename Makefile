@@ -9,7 +9,7 @@ SUBMODULES:=
 # things to clean up, e.g. libfilecoin.a
 CLEAN:=
 
-FFI_PATH:=extern/filecoin-ffi/
+FFI_PATH:=../filecoin-ffi/
 FFI_DEPS:=libfilecoin.a filecoin.pc filecoin.h
 FFI_DEPS:=$(addprefix $(FFI_PATH),$(FFI_DEPS))
 
